@@ -1,0 +1,507 @@
+/*
+ * mGrid v.0.1 Stylesheet
+ * Copyright (c) 2014 Vasilij Olhov
+ * Dual licensed under the MIT and GPL licenses
+ */
+
+/* ---------------- CONTAINER --------------------- */
+.mgrid {
+    padding: 0;
+    margin : 0;
+    font-family: Tahoma, Verdana, Arial;
+    font-size: 11px;
+    color: #555;
+    background-color: #F0F0F0;
+    border:1px solid #888;
+}
+
+.mgrid-border {
+    border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+}
+.mgrid-caption-bg {
+    background-color: #E6E6E6 !important;
+}
+.mgrid-header-bg {
+    background-color: #CCCCCC !important;
+}
+
+
+.mgrid-groups {
+    margin-right:4px;
+}
+
+.mgrid-groups-cleaner {
+    margin:0 !important;
+    padding:0 !important;
+    height:0 !important;
+    width:0 !important;
+    border:none;
+}
+
+.mgrid .clr {
+    clear:both;
+    padding:0;
+    margin:0;
+    width:100%;
+    height: 0 !important;
+    font-size:0;
+    line-height:0;
+}
+
+div.mgrid-progressbar {
+    position: absolute;
+    display: none;
+    background-color: rgba( 170, 170, 170, 0.1 );
+    z-index:10002;
+    width:50px;
+    height:50px;
+    text-align: center;
+    line-height: 50px;
+}
+
+div.mgrid-progressbar span {
+    border:1px solid #777;
+    background-color: #FFF;
+    padding: 10px;
+    color: #555;
+}
+
+/* ---------------- TITLE OF GRID --------------------- */
+.mgrid .mgrid-title {
+    background-color: #DDD;
+    padding: 4px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom: 1px solid #AAA;
+}
+
+
+
+
+/* ---------------- HEADERS OF COLUMNS--------------------- */
+.mgrid .mgrid-header {
+    overflow: hidden;
+}
+
+.mgrid .mgrid-header table {
+    background-color: #EEE;
+    margin: 0;
+    table-layout: fixed;
+    outline-style: none;
+}
+
+.mgrid .mgrid-header th {
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 14px;
+    padding: 3px 2px 3px 2px;
+    border: 1px solid #CCC;
+    border-left: 0;
+    border-top: 0;
+    overflow: hidden;
+    cursor: pointer; cursor:hand;
+}
+
+.mgrid .mgrid-header .mgrid-column-name {
+    white-space: nowrap;
+    position: relative;
+    background-image: none;
+    background-repeat: no-repeat;
+    font-weight: bold;
+    color: #444;
+}
+.mgrid .mgrid-header .mgrid-column-name.mgrid-sort-asc { background-image: url('icons.png'); background-position: right -576px; }
+.mgrid .mgrid-header .mgrid-column-name.mgrid-sort-desc { background-image: url('icons.png'); background-position: right -594px; }
+
+
+.mgrid .mgrid-header th span.mgrid-column-resizer {
+    z-index:1;
+    float: right;
+    margin: -2px -2px -2px 0;
+    cursor: col-resize;
+    display: inline;
+    height: 20px !important;
+    overflow: hidden;
+    position: relative;
+    width: 4px;
+}
+
+
+
+/* ---------------- FILTERS IN HEADER --------------------- */
+.mgrid .mgrid-header td {
+    border: 1px solid #CCC;
+    border-left: 0;
+    border-top: 0;
+    text-align: left;
+}
+.mgrid .mgrid-header input {
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 9px;
+    padding:1px;
+    color: #888;
+    border:1px solid #DDD;
+    margin: 1px;
+    width:85%;
+    background-color: #F2F2F2;
+}
+
+.mgrid .mgrid-content hl {
+    background-color: #FBFB00;
+}
+
+
+/* ---------------- CONTENT --------------------- */
+.mgrid .mgrid-content {
+    overflow: auto;
+    padding: 0 !important;
+    margin:0 !important;
+    border: 0 !important;
+    position: relative;
+    text-align: left;
+    height: 60px;
+    background-color: #FFF;
+}
+
+.mgrid .mgrid-content table {
+    background-color: #FFF;
+    margin: 0;
+    table-layout: fixed;
+    outline-style: none;
+    border-collapse:collapse;
+    empty-cells: show;
+	font-family: Tahoma, Verdana, Arial;
+    font-size: 11px;
+    color: #555;
+}
+.mgrid .mgrid-content tr:hover { background-color: #EEE !important; }
+.mgrid .mgrid-content tr.mgrid-selected-item { background-color: #DDD !important; color: #000; }
+
+.mgrid .mgrid-content td {
+    height: 20px;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    border-top: 0;
+    border-left: 0;
+    padding: 0 2px;
+    white-space: pre;
+    text-align: left;
+    cursor: default;
+}
+
+.mgrid .mgrid-content hl {
+    background-color: #FBFB00;
+}
+
+
+
+.mgrid-groups .mgrid-content div.mgrid-group-row {
+    margin: 4px;
+    padding: 3px;
+    padding-left: 24px;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background-color:#EEE;
+    color: #777;
+    background-image: url('icons.png');
+    background-repeat: no-repeat;
+    background-position: 3px -611px;
+    cursor: pointer; cursor:hand;
+}
+
+.mgrid-groups .mgrid-content div.mgrid-group-row:hover {
+    color: #333 !important;
+    border: 1px solid #AAA !important;
+}
+
+.mgrid-groups .mgrid-content div.mgrid-group-row.mgrid-selected-group {
+    color: #333 !important;
+    background-position: 3px -631px !important;
+    background-color:#DDD !important;
+    border: 1px solid #999 !important;
+}
+
+.mgrid-groups .mgrid-content div.mgrid-group-row.mgrid-group-without-group {
+    background-color:#FAFAFA;
+    border: 1px solid #DDD;
+    color:#AAA;
+    font-style: italic;
+    margin-bottom: 12px !important;
+}
+
+.mgrid-groups .mgrid-content div.mgrid-group-row.mgrid-group-allitems-group {
+    background-color:#FAFAFA;
+    border: 1px solid #DDD;
+    color:#AAA;
+    font-style: italic;
+}
+
+
+
+.mgrid-groups .mgrid-content div.mgrid-group-name {
+    float:left;
+    display: block;
+    overflow: hidden;
+    padding:2px;
+    width: 120px;
+    height: 12px;
+}
+
+.mgrid-groups .mgrid-content div.mgrid-group-counter {
+    float: right;
+    width: 15px;
+    height: 15px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    text-align: center;
+    font-size: 8px;
+    line-height: 15px;
+    background-color: #F9F9F9;
+    border: 1px solid #DDD;
+}
+
+.mgrid-groups .mgrid-content div.mgrid-group-row.mgrid-item-inside div.mgrid-group-counter {
+    background-color: #E5E5E5 !important;
+}
+
+/* ---------------- ACTION BUTTONS IN PAGINATOR --------------------- */
+.mgrid .mgrid-button {
+    width: 18px;
+    height: 18px;
+    float:left;
+    border: none;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin-right:8px;
+    padding:1px;
+    cursor: pointer; cursor:hand;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-image: url('icons.png');
+}
+.mgrid .mgrid-button:hover { padding:0; border: 1px solid #AAA; }
+
+.mgrid .mgrid-button-add { background-position: 0 0; }
+.mgrid .mgrid-button-add:hover { background-position: 0 -18px;}
+.mgrid .mgrid-button-update { background-position: 0 -36px; }
+.mgrid .mgrid-button-update:hover { background-position: 0 -54px;}
+.mgrid .mgrid-button-remove { background-position: 0 -72px; }
+.mgrid .mgrid-button-remove:hover { background-position: 0 -90px;}
+.mgrid .mgrid-button-refresh { background-position: 0 -108px; }
+.mgrid .mgrid-button-refresh:hover { background-position: 0 -126px; }
+
+.mgrid .mgrid-button-move { background-position: 0 -322px;}
+.mgrid .mgrid-button-move:hover { padding:1px; border:none; background-position: 0 -341px; }
+.mgrid .mgrid-button-move.active { padding:0; border: 1px solid #777; background-position: 0 -341px; }
+.mgrid .mgrid-button-copy { background-position: 0 -431px;}
+.mgrid .mgrid-button-copy:hover { padding:1px; border:none; background-position: 0 -450px; }
+.mgrid .mgrid-button-copy.active { padding:0; border: 1px solid #777; background-position: 0 -450px; }
+
+
+.mgrid .mgrid-button-clear { background-position: 0 -396px; float:right; margin:0; margin-left: 8px;}
+.mgrid .mgrid-button-clear:hover { background-position: 0 -414px; }
+
+.mgrid .mgrid-delimeter {
+    float: left;
+    background-color: #999;
+    height: 14px;
+    margin: 3px 12px 0 4px;
+    width: 1px;
+}
+
+
+
+
+/* ---------------- FOOTER(PAGINATOR) --------------------- */
+.mgrid .mgrid-footer {
+    height: 28px;
+    overflow: hidden;
+    color: #444;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #CCC;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.mgrid .mgrid-footer table {
+    table-layout: fixed;
+    outline-style: none;
+}
+
+.mgrid .mgrid-footer table td {
+    font-size: 10px;
+    padding: 4px;
+    overflow: hidden;
+    white-space:nowrap;
+}
+
+.mgrid .mgrid-pages-selector {
+     display: none;
+     font-size:10px;
+     color: #777;
+     border: 1px solid #CCC;
+     padding: 1px;
+     height: 20px;
+     background-color: #F8F8F8;
+}
+.mgrid .mgrid-pages-selector-prev {
+    float: none !important;
+    display: none;
+    margin-right:2px !important;
+    height: 14px !important;
+    width: 14px; !important;
+    background-position: center -505px !important;
+}
+.mgrid .mgrid-pages-selector-prev:hover {     background-position: center -523px !important; }
+.mgrid .mgrid-pages-selector-next {
+    float: none !important;
+    display: none;
+    margin-left:2px !important;
+    height: 14px !important;
+    width: 14px; !important;
+    background-position: center -541px !important;
+}
+.mgrid .mgrid-pages-selector-next:hover {     background-position: center -559px !important; }
+
+
+
+
+
+
+/* ---------------- POPUP WINDOWS --------------------- */
+div.mgrid-overlay {
+    position: fixed;
+    z-index: 10000;
+    opacity: 0.25;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+div.mgrid-window {
+    padding: 0;
+    margin : 0;
+    font-family: Tahoma, Verdana, Arial;
+    font-size: 11px;
+    display:none;
+    position: fixed;
+    z-index: 10001;
+    left: 100px;
+    top: 100px;
+    width: 360px;
+    background-color: #F5F5F5;
+    color: #444;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7);
+    -moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+}
+
+div.mgrid-window > div.mgrid-window-header {
+    background-color: #DDDDDD;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    padding: 4px;
+    text-align: left;
+    height:22px;
+    border-bottom: 1px solid #AAA;
+}
+
+div.mgrid-window > div.mgrid-window-header > span.mgrid-window-title {
+    color: #555;
+    font-weight: bold;
+    font-size: 11px;
+    margin: 4px;
+    line-height:14px;
+    overflow: hidden;
+    display:block;
+    height: 22px;
+}
+
+div.mgrid-window > div.mgrid-window-header > span.mgrid-window-close {
+    position: absolute;
+    display: block;
+    top: 6px;
+    right: 6px;
+    cursor: pointer; cursor:hand;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-image: url('icons.png');
+    background-position: 0 -180px;;
+    z-index: 2;
+}
+div.mgrid-window > div.mgrid-window-header > span.mgrid-window-close:hover { background-position: 0 -198px; }
+
+div.mgrid-window > div.mgrid-window-body { padding:8px; }
+
+div.mgrid-window > div.mgrid-window-body label {
+    display: inline-block;
+    width: 70px;
+    padding: 3px;
+    text-align: left;
+}
+
+div.mgrid-window > div.mgrid-window-body input,
+div.mgrid-window > div.mgrid-window-body textarea,
+div.mgrid-window > div.mgrid-window-body select {
+    background-color: #FFF;
+    width: 258px;
+    margin-bottom: 8px;
+    padding: 3px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    font-family: Arial;
+    font-size: 1em;
+    color: #555;
+    resize: none;
+}
+
+div.mgrid-window-buttons {
+    border-top: 1px solid #BBB;
+    padding-right: 7px;
+    padding-left: 5px;
+}
+
+div.mgrid-window-buttons div.mgrid-window-button {
+    display: block;
+    min-width: 75px;
+    font-family: Arial;
+    font-size: 1em;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer; cursor:hand;
+    background-color: #FAFAFA;
+    text-align: center;
+    margin: 8px;
+    padding: 4px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    overflow: visible;
+    text-decoration: none !important;
+}
+div.mgrid-window-buttons div.mgrid-window-button:hover { color: #333; border: 1px solid #AAA; }
+div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-cancel { float:left; }
+div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-add, div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-group_add  { float:right; }
+div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-update, div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-group_update { float:right; }
+div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-remove, div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-group_remove  { float:right; }
+div.mgrid-window-buttons div.mgrid-window-button.mgrid-window-button-group_clear  { float:right; }

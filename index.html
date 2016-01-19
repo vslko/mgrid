@@ -1,0 +1,435 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<link rel="stylesheet" type="text/css" href="./css/mgrid.css" />
+<link rel="stylesheet" type="text/css" href="../css/styles.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="./mgrid.js"></script>
+<script type="text/javascript">
+
+$(document).ready( function(){
+
+		$('div#cities-grid').mGrid({
+                title        : "Cities",
+                url          : {
+                                 fetch  : './server/items.php?action=fetch',
+                                 add    : './server/items.php?action=add',
+                                 update : './server/items.php?action=update',
+                                 remove : './server/items.php?action=remove'
+                },
+                forms        : {
+                                add       : $('div#cities-window'),
+                                update    : $('div#cities-window'),
+                                remove    : $('div#cities-remove')
+                },
+                columns      : [
+                                 { attr:'id',    	hidden:true,	pkey:true },
+                                 { attr:'city',  	view:'City', 	hidden:false,	filtered:true,	width: 100 },
+                                 { attr:'country',  view:'Country', hidden:false,	filtered:true },
+                                 { attr:'value',  	view:'Value', 	hidden:false,	filtered:false,	width: 70 }
+                ],
+                callback     : {
+                				 onSelect  : function(data) { out('Item-Event <b>[OnSelect]</b><br>' + print_r(data) ); return true; },
+                				 onAction  : function(action, data) { out('Item-Event <b>[OnAction]</b> for ['+action+']<br>' + print_r(data) ); return true; },
+                                 onSubmit  : function(action, data) { out('Item-Event <b>[OnSubmit]</b> for ['+action+']<br>' + print_r(data) ); return true; },
+                                 onSuccess : function(action, data, message) { out('Item-Event <b>[OnSuccess]</b> for ['+action+']<br>Message: '+message+'<br>' + print_r(data) ); },
+                                 onError   : function(action, message) { out('Item-Event <b>[OnError]</b> for ['+action+']<br>Message: '+message); }
+                },
+                groupped    : true,
+                groups      : {
+                                 width    : 200,
+                                 title    : 'Regions',
+                                 url      : {
+                                 	fetch	: './server/groups.php?action=fetch',
+                                 	add		: './server/groups.php?action=add',
+                                 	update	: './server/groups.php?action=update',
+                                    remove	: './server/groups.php?action=remove',
+                                    clear   : './server/groups.php?action=clear',
+                                    copy    : './server/items.php?action=copy',
+                                    move    : './server/items.php?action=move'
+                                 },
+                                 callback : {
+                				 	onSelect  : function(data) { out('Group-Event <b>[OnSelect]</b><br>' + print_r(data) ); return true; },
+                				 	onAction  : function(action, data) { out('Group-Event <b>[OnAction]</b> for ['+action+']<br>' + print_r(data) ); return true; },
+                                 	onSubmit  : function(action, data) { out('Group-Event <b>[OnSubmit]</b> for ['+action+']<br>' + print_r(data) ); return true; },
+                                 	onSuccess : function(action, data, message) { out('Group-Event <b>[OnSuccess]</b> for ['+action+']<br>Message: '+message+'<br>' + print_r(data) ); },
+                                 	onError   : function(action, message) { out('Group-Event <b>[OnError]</b> for ['+action+']<br>Message: '+message); }
+                                 }
+                }
+		})
+        .mGrid( 'fetch', {} );
+
+
+
+    $('button#clear').on('click', function() { $('div#output').empty(); });
+
+});
+
+function out( message ) {
+	$('div#output').append('<div>&gt;&gt; '+message+'<br></div>')
+				   .scrollTop( $('div#output')[0].scrollHeight );
+};
+
+function print_r(arr, level) {
+    var print_red_text = "";
+    if(!level) level = 0;
+    var level_padding = "";
+    for(var j=0; j<level+1; j++) level_padding += "&nbsp;&nbsp;&nbsp;&nbsp;";
+    if(typeof(arr) == 'object') {
+        for(var item in arr) {
+            var value = arr[item];
+            if(typeof(value) == 'object') {
+                print_red_text += level_padding + "'" + item + "'&nbsp;:<br>";
+                print_red_text += print_r(value,level+1);
+			}
+            else { print_red_text += level_padding + "'" + item + "'&nbsp;=>&nbsp;\"" + value + "\"<br>"; }
+        }
+    }
+    else  print_red_text = "===>"+arr+"<===("+typeof(arr)+")";
+    return print_red_text;
+};
+
+</script>
+<style type="text/css">
+  body { background-color:#F5F5F5; font-size: 12px; font-family: Tahoma; color: #555; margin: 24px; }
+  .section { background: none repeat scroll 0 0 #FFFFFF; box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); margin-bottom: 27px; padding: 20px; line-height: 18px; }
+  ul.section { padding-left: 32px; }
+  .section-title { font-size: 20px;line-height: 22px;margin-bottom: 10px;margin-top: 10px;font-weight: normal;}
+  .in-section-title {font-size: 18px;line-height: 20px;margin-bottom: 8px;font-weight: normal;}
+  pre {background-color: #FAFAFA;border: 1px solid #CCCCCC;color: #000000;font-size: 11px;padding: 4px;}
+  a {color: #006096;text-decoration:none;font-weight: bold; }
+  a:hover { text-decaration: underline; }
+  .definition { display: inline-block; font-family: monospace;font-size: 15px;color: #0070A6;}
+  .typization { margin-left: 30px; font-style: italic; }
+  .description {display:block;margin-bottom: 20px; margin-left: 10px;}
+</style>
+
+<head>
+<title>Mantella Grid</title>
+</head>
+<body>
+<style type="text/css">
+	button {
+		border:1px solid #aaa;
+		background-color: #E5E5E5;
+		padding: 4px;
+		margin:4px;
+		color: #555;
+		width: 120px;
+		font-size:11px;
+		cursor:pointer; *cursor:hand;
+		border-radius: 4px;
+	}
+	button:hover {
+		background-color: #F7F7F7;
+		border:1px solid #ccc;
+		color: #222;
+	}
+</style>
+<div class="section-title">mGrid demo</div>
+<div class="section">
+
+	<div id="cities-grid" style="width:720px; height:420px; float:left;"></div>
+
+	<div style="float:left; margin-left:20px;">
+		<div id="output" style="clear:both; border:1px solid #CFCFCF; overflow:auto; font-size:10px; line-height:11px; width:600px; height:390px;">output..</div>
+    	<button id="clear" style="float:right;">Clear output</button>
+	</div>
+	<div style="clear:both;"></div>
+
+
+
+	<div id="cities-window">
+    	<input type="hidden" name="id" value="">
+    	<label for="city">City:</label> <input type="text" name="city" value="" /><br />
+    	<label for="country">Country:</label> <input type="text" name="country" value="" /><br />
+    	<label for="value">Value:</label> <input type="text" name="value" value="100" /><br />
+	</div>
+
+	<div id="cities-remove">
+    	<input type="hidden" name="id" value="">
+	    Do You want remove city?
+	</div>
+
+</div>
+
+
+
+<div class="section-title">Features</div>
+<ul class="section">
+    <li>Table-based grid to display information</li>
+    <li>Highlight filters support</li>
+    <li>Resized columns</li>
+    <li>Sorting</li>
+    <li>Paging support</li>
+    <li>Build-in form to modify items</li>
+    <li>Extended mode: with groups of items</li>
+    <li>Drag and Drop support</li>
+    <li>Custom mapping for views</li>
+    <li>On events callback functions support</li>
+</ul>
+
+<div class="section-title">Getting started</div>
+<div class="section">
+	<div class="in-section-title">Insert in head</div>
+	<pre>&lt;!-- basic style --&gt;
+&lt;link rel="stylesheet" type="text/css" href="your_path/css/mgrid.css" /&gt;
+&lt;!-- required javascripts --&gt;
+&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="your_path/js/mgrid.js"&gt;&lt;/script&gt;</pre>
+	<div class="in-section-title">Insert in body</div>
+	<pre>&lt;div id="grid" style="width:720px; height:420px;"&gt;&lt;/div&gt;
+
+&lt;div id="grid-modify-window"&gt;
+	&lt;input type="hidden" name="id" value=""&gt;
+	&lt;label for="city"&gt;City:&lt;/label&gt; &lt;input type="text" name="city" value="" /&gt;&lt;br /&gt;
+	&lt;label for="country"&gt;Country:&lt;/label&gt; &lt;input type="text" name="country" value="" /&gt;&lt;br /&gt;
+	&lt;label for="value"&gt;Value:&lt;/label&gt; &lt;input type="text" name="value" value="100" /&gt;&lt;br /&gt;
+&lt;/div&gt;
+
+&lt;div id="grid-remove-window"&gt;
+    	&lt;input type="hidden" name="id" value=""&gt;
+	    Do You want remove city?
+&lt;/div&gt;
+
+
+&lt;script type="text/javascript"&gt;
+$(document).ready( function(){
+
+	$('div#grid').mGrid({
+		title : "Cities",
+		url : {
+			fetch : './server/items.php?action=fetch',
+			add : './server/items.php?action=add',
+			update : './server/items.php?action=update',
+			remove : './server/items.php?action=remove'
+		},
+		forms : {
+			add : $('div#grid-modify-window'),
+			update : $('div#grid-modify-window'),
+			remove : $('div#grid-remove-window')
+		},
+		columns      : [
+        	{ attr:'id', hidden:true, pkey:true },
+			{ attr:'city', view:'City', hidden:false, filtered:true, width: 100 },
+			{ attr:'country', view:'Country', hidden:false, filtered:true },
+			{ attr:'value', view:'Value', hidden:false, filtered:false, width: 70 }
+		],
+		groupped : true,
+		groups : {
+			width : 200,
+			title : 'Regions',
+			url : {
+				fetch : './server/groups.php?action=fetch',
+				add : './server/groups.php?action=add',
+				update : './server/groups.php?action=update',
+				remove : './server/groups.php?action=remove',
+				clear : './server/groups.php?action=clear',
+				copy : './server/items.php?action=copy',
+				move : './server/items.php?action=move'
+			}
+		}
+	})
+	.mGrid( 'fetch', {} );
+});
+&lt;/script&gt;</pre>
+
+</div>
+
+
+<div class="section-title">Documentation</div>
+<div class="section">
+
+	<div class="in-section-title">Options</div>
+	<span class="definition">title</span><span class="typization">Type: string, Default: " "</span>
+	<span class="description">Caption of items list</span>
+	<span class="definition">recInPage</span><span class="typization">Type: integer, Default: 50</span>
+	<span class="description">Count of items in page</span>
+	<span class="definition">extraParams</span><span class="typization">Type: object, Default: {}</span>
+	<span class="description">Additional parameter in requests to server</span>
+	<span class="definition">callback</span><span class="typization">Type: object, Default: </span>
+	<span class="description">Callback function called on any events in <b>Items</b> list (see section Events)</span>
+	<span class="definition">columns</span><span class="typization">Type: array of objects, Default: </span>
+	<span class="description">Column's of list definition<br><br>
+	Each column-object can contains such properties:<br>
+	&nbsp;&nbsp;<b>attr</b>: Obligatory. Column identificator, field-name in json structure from server response<br>
+	&nbsp;&nbsp;<b>pkey</b>: Obligatory. ID of record, default false. True must be only in one colunm<br>
+	&nbsp;&nbsp;<b>view</b>: Obligatory. Title of column in grid<br>
+	&nbsp;&nbsp;<b>width</b>: Optional. Size in pixel of column.<br>
+	&nbsp;&nbsp;<b>hidden</b>: Optional. Is column hidden, default false.<br>
+	&nbsp;&nbsp;<b>filtered</b>: Optional. Need show under column title input for filter, default false<br>
+	&nbsp;&nbsp;<b>cls</b>: Optional. CSS class-name to display data in list<br>
+	&nbsp;&nbsp;<b>render</b>: Optional. Alpha-fuction to change content of column in list.<br>
+	Looks like:<br>
+	function(original_value) { <br>
+	&nbsp; .. here any actions ..<br>
+	&nbsp;return modified_value;<br>
+	}
+	</span>
+	<span class="definition">url</span><span class="typization">Type: object, Default: </span>
+	<span class="description">URL-s to get and modify items.</span>
+	<span class="definition">url.fetch</span><span class="typization">Type: string, Default: "./items/"</span>
+	<span class="description">URL to fetch items list.<br> <br>
+	Request contains additional service variables:<br>
+    &nbsp;&nbsp;<b>_sord</b>: sorting order (asc/desc)<br>
+	&nbsp;&nbsp;<b>_scol</b>: sorting column name (column.attr)<br>
+	&nbsp;&nbsp;<b>_page</b>: number of page [1..]<br>
+	&nbsp;&nbsp;<b>_recs</b>: records in page [1..]<br>
+	&nbsp;&nbsp;<b>_group</b>: ID of group (if option "groupped" is true), "all" - for all items, "not" - for items not in any group<br>
+    Response contains:<br>
+	&nbsp;&nbsp;<b>fields</b> by columns definition<br>
+	&nbsp;&nbsp;<b>_groups</b>: array of group IDs (if option "groupped" is true)
+	</span>
+	<span class="definition">url.add</span><span class="typization">Type: string, Default: "./items/add"</span>
+	<span class="description">URL to add new item.<br> <br>
+	Request contains additional service variables:<br>
+    &nbsp;&nbsp;<b>inputs</b> from form in add-window<br>
+	&nbsp;&nbsp;<b>_group</b>: ID of group (if option "groupped" is true), "all" - for all items, "not" - for items not in any group<br>
+    Response contains:<br>
+	&nbsp;&nbsp;<b>fields</b> by columns definition<br>
+	&nbsp;&nbsp;<b>_groups</b>: array of groups IDs (if option "groupped" is true)
+	</span>
+	<span class="definition">url.update</span><span class="typization">Type: string, Default: "./items/update"</span>
+	<span class="description">URL to update exists item.<br><br>
+	Request contains additional service variables:<br>
+    &nbsp;&nbsp;<b>inputs</b> from form in update-window<br>
+	&nbsp;&nbsp;<b>_group</b>: ID of group (if option "groupped" is true), "all" - for all items, "not" - for items not in any group<br>
+    Response contains:<br>
+	&nbsp;&nbsp;<b>fields</b> by columns definition<br>
+	&nbsp;&nbsp;<b>_groups</b>: array of groups IDs (if option "groupped" is true)
+	</span>
+	<span class="definition">url.remove</span><span class="typization">Type: string, Default: "./items/remove"</span>
+	<span class="description">URL to remove item.<br><br>
+	Request contains additional service variables:<br>
+    &nbsp;&nbsp;<b>ID</b> of removing item<br>
+	&nbsp;&nbsp;<b>_group</b>: ID of group (if option "groupped" is true), "all" - for all items, "not" - for items not in any group<br>
+    Response contains:<br>
+	&nbsp;&nbsp;<b>ID</b> of removed item<br>
+	</span>
+	<span class="definition">forms</span><span class="typization">Type: object, Default: </span>
+	<span class="description">JQuery objects to forms in window display.<br><br>
+	Contains such properties:<br>
+	<b>add</b> : $('&lt;div&gt;Add-Form not defined&lt;/div&gt;'),<br>
+    <b>update</b> : $('&lt;div>Update-Form not defined&lt;/div&gt;'), <br>
+    <b>remove</b> : $('&lt;div&gt;Remove-Form not defined&lt;/div&gt;')<br>
+    </span>
+	<span class="definition">locale</span><span class="typization">Type: object, Default: english locale</span>
+	<span class="description">Translations. Contents such fields:<br>
+		&nbsp;&nbsp;<b>progress</b>            : 'processing..',  <br />
+        &nbsp;&nbsp;<b>cancel_button</b>       : 'Cancel',<br />
+        &nbsp;&nbsp;<b>add_button</b>          : 'Add',  <br />
+        &nbsp;&nbsp;<b>update_button</b>       : 'Save',  <br />
+        &nbsp;&nbsp;<b>remove_button</b>       : 'Remove', <br />
+        &nbsp;&nbsp;<b>clear_button</b>        : 'Clear',  <br />
+        &nbsp;&nbsp;<b>add_record</b>          : 'Add new item',  <br />
+        &nbsp;&nbsp;<b>update_record</b>       : 'Update selected item',<br />
+        &nbsp;&nbsp;<b>remove_record</b>       : 'Remove selected item',<br />
+        &nbsp;&nbsp;<b>move_record</b>         : 'Move items on drag-n-drop into groups',  <br />
+        &nbsp;&nbsp;<b>copy_record</b>         : 'Copy items on drag-n-drop into groups', <br />
+        &nbsp;&nbsp;<b>empty_result</b>        : 'No items to view',    <br />
+        &nbsp;&nbsp;<b>found_result</b>        : 'Found {total} items', <br />
+        &nbsp;&nbsp;<b>result</b>              : 'View {from}-{to} of {total}, page {page}/{pages}',<br />
+        &nbsp;&nbsp;<b>select_page</b>         : 'Page {num}',      <br />
+        &nbsp;&nbsp;<b>add_caption</b>         : 'Add new item',  <br />
+        &nbsp;&nbsp;<b>update_caption</b>      : 'Modify {name}',<br />
+        &nbsp;&nbsp;<b>remove_caption</b>      : 'Remove {name}',<br />
+        &nbsp;&nbsp;<b>group_name </b>         : 'Group',         <br />
+        &nbsp;&nbsp;<b>out_of_group</b>        : 'Without group items',  <br />
+        &nbsp;&nbsp;<b>all_items</b>           : 'All items',       <br />
+        &nbsp;&nbsp;<b>group_add_record</b>    : 'Add new group',      <br />
+        &nbsp;&nbsp;<b>group_update_record</b> : 'Rename selected group',  <br />
+        &nbsp;&nbsp;<b>group_remove_record</b> : 'Remove selected group',   <br />
+        &nbsp;&nbsp;<b>group_clear</b>         : 'Remove all items from group',  <br />
+        &nbsp;&nbsp;<b>group_add_caption</b>   : 'Add new group',             <br />
+        &nbsp;&nbsp;<b>group_update_caption</b>: 'Rename group {name}',     <br />
+        &nbsp;&nbsp;<b>group_remove_caption</b>: 'Remove group {name}',   <br />
+        &nbsp;&nbsp;<b>group_clear_caption</b> : 'Clear group {name}',   <br />
+        &nbsp;&nbsp;<b>group_remove_confirm</b>: 'Do you want remove this group?',<br />
+        &nbsp;&nbsp;<b>group_clear_confirm</b> : 'Do you want clear items from group?'
+	</span>
+	<span class="definition">groupped</span><span class="typization">Type: boolean, Default: false</span>
+	<span class="description">Advanced(with groups) or simple (only items list) mode</span>
+	<span class="definition">groups</span><span class="typization">Type: object, Default:</span>
+	<span class="description">Groups definition</span>
+	<span class="definition">groups.title</span><span class="typization">Type: string, Default: "Groups"</span>
+	<span class="description">Caption over groups list</span>
+	<span class="definition">groups.width</span><span class="typization">Type: integer, Default: 200</span>
+	<span class="description">Width in pixels of groups list</span>
+	<span class="definition">groups.callback</span><span class="typization">Type: object, Default: </span>
+	<span class="description">Callback function called on any events in <b>Groups</b> list (see section Events)</span>
+	<span class="definition">groups.url</span><span class="typization">Type: object, Default: </span>
+	<span class="description">URLs for request to modify and get groups<br><br>
+	Contains such parameteres:<br>
+	&nbsp;&nbsp;<b>fetch</b>: './groups/', <i>// to fetch all group, additionally creates group with all items and group "free" items</i><br>
+	&nbsp;&nbsp;<b>add</b>: './groups/add', <i>// to add new</i><br>
+	&nbsp;&nbsp;<b>update</b>: './groups/update', <i>// to update exists group</i><br>
+	&nbsp;&nbsp;<b>remove</b>: './groups/remove', <i>// to remove group, all item in this group will "free"</i><br>
+	&nbsp;&nbsp;<b>copy</b>: './items/copy', <i>// to copy item between groups</i><br>
+	&nbsp;&nbsp;<b>move</b>: './items/move', <i>// to move item between groups</i><br>
+	&nbsp;&nbsp;<b>clear</b>: './groups/clear' <i>// to clear all items from group</i><br>
+	</span>
+
+	<div class="in-section-title">Methods</div>
+	<span class="definition">object.mGrid('getExtraParams')</span><span class="typization">Return: object</span>
+	<span class="description">Return extra parameters as javascript object</span>
+	<span class="definition">object.mGrid('setExtraParams', params)</span><span class="typization">Argument: object</span>
+	<span class="description">Set additional parameters for requests</span>
+	<span class="definition">object.mGrid('fetchItems', params)</span><span class="typization">Argument: object of extra-perameters</span>
+	<span class="description">Fetch items from server</span>
+	<span class="definition">object.mGrid('fetchGroups', params)</span><span class="typization">Argument: object of extra-perameters</span>
+	<span class="description">Fetch groups from server</span>
+	<span class="definition">object.mGrid('fetch')</span><span class="typization">Argument: object of extra-perameters</span>
+	<span class="description">Fetch groups (if option "groupped" is true) and items from server</span>
+	<span class="definition">object.mGrid('clearItems')</span><span class="typization">Argument:</span>
+	<span class="description">Erase all items in current view</span>
+	<span class="definition">object.mGrid('selectedItem')</span><span class="typization">Return: object</span>
+	<span class="description">Return selected item as javascript object or false if no selection</span>
+	<span class="definition">object.mGrid('selectedGroup')</span><span class="typization">Return: object</span>
+	<span class="description">Return selected group as javascript object</span>
+	<span class="definition">object.mGrid('getItem', pkey)</span><span class="typization">Return: object</span>
+	<span class="description">Return item by primary key, defined in coluns definition or false if item not found</span>
+	<span class="definition">object.mGrid('getItems')</span><span class="typization">Return: array of object</span>
+	<span class="description">Return all fetched items</span>
+	<span class="definition">object.mGrid('setTitle', title)</span><span class="typization">Argumnt: string</span>
+	<span class="description">change title of items list</span>
+
+	<div class="in-section-title">Events</div>
+	<span class="definition">callback.onSelect( item:object )</span>
+	<span class="description">Triggered when item is selected. <br>
+	Contains item as object. Must return true if selection is available or false if is not</span>
+	<span class="definition">callback.onAction( action:string, item:object )</span>
+	<span class="description">Triggered when called any action in items list.<br>
+	Contains action (fetch/add/update/remove) and item as object. Must return true if action is available or false if is not</span>
+	<span class="definition">callback.onSubmit( action:string, item:object )</span>
+	<span class="description">Triggered before request to server on any action in items list.<br>
+	Contains action (fetch/add/update/remove) and item as object. Must return true if submitting request is available or false if is not</span>
+	<span class="definition">callback.onSuccess( action:string, item:object, message:string )</span>
+	<span class="description">Triggered after successfully request to server in items list.<br>
+	Contains action (fetch/add/update/remove), item(s) as object and message</span>
+	<span class="definition">callback.onError( action:string, message:string )</span>
+	<span class="description">Triggered when except error with server communication.<br>
+	Contains action (fetch/add/update/remove) and error message</span>
+	<span class="definition">groups.callback.onSelect( group:object )</span>
+	<span class="description">Triggered when group is selected. <br>
+	Contains group as object. Must return true if selection is available or false if is not</span>
+	<span class="definition">groups.callback.onAction( action:string, group:object )</span>
+	<span class="description">Triggered when called any action in groups list.<br>
+	Contains action (fetch/add/update/remove/copy/move/clear) and group as object. Must return true if action is available or false if is not</span>
+	<span class="definition">groups.callback.onSubmit( action:string, group:object )</span>
+	<span class="description">Triggered before request to server on any action in groups list.<br>
+	Contains action (fetch/add/update/remove/copy/move/clear) and group as object. Must return true if submitting request is available or false if is not</span>
+	<span class="definition">groups.callback.onSuccess( action:string, group:object, message:string )</span>
+	<span class="description">Triggered after successfully request to server in groups list.<br>
+	Contains action (fetch/add/update/remove/copy/move/clear), group(s) as object and message</span>
+	<span class="definition">groups.callback.onError( action:string, message:string )</span>
+	<span class="description">Triggered when except error with server communication.<br>
+	Contains action (fetch/add/update/remove/copy/move/clear) and error message</span>
+
+</div>
+
+
+</body>
+</html>
+
